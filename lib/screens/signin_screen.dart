@@ -1,4 +1,5 @@
 import 'package:Netflixapp/screens/home_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -23,6 +24,10 @@ class _SigninScreenState extends State<SigninScreen> {
         email: emailController.text, password: passwordController.text))
         .user;
     if (user != null) {
+      await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+        'name': nameController.text,
+        'email': emailController.text,
+      });
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => SigninScreen()));
     }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:Netflixapp/screens/home_screen.dart';
+import 'package:Netflixapp/widgets/bottomnavbar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -27,6 +28,18 @@ class _SearchScreenState extends State<SearchScreen> {
             Navigator.pop(context);
           },
         ),
+        actions: [
+          Container(
+            padding: EdgeInsets.all(10),
+            height: 40,
+            child: Image.asset('assets/logo.jpg'),
+          ),
+        ],
+        elevation: 0.0,
+      ),
+      bottomNavigationBar: BottomNavBar(
+        onTap: (index) => NavigationHelper.navigate(context, index),
+        currentIndex: 1,
       ),
       body: Column(
         children: [
@@ -57,7 +70,7 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
     );  }
 
-  Future<void> _searchMovies() async {
+  Future _searchMovies() async {
     String query = _searchController.text;
 
     if (query.isNotEmpty) {
@@ -76,9 +89,10 @@ class _SearchScreenState extends State<SearchScreen> {
             );
           });
         } else {
-          throw Exception('Failed to load data');
+          return   Center(child: CircularProgressIndicator());
         }
-      } catch (error) {
+      }
+      catch (error) {
         print('Error: $error');
       }
     }
